@@ -9,10 +9,11 @@ class Sudoku{
     string Sudoku_board[9][9];
     void create_sudoku_board();
     void display_sudoku_board();
-    bool space_checker(string Sudoku_board[9][9]);
+    bool space_checker(string Sudoku_board[9][9], int i, int j);
     int random_num_generator(int n);
     string choose_number(int num);
     void place_on_board(string Sudoku_board[9][9]);
+    void place_player_num(int cell_num, string Sudoku_board[9][9], int num);
 };
 
 void Sudoku::create_sudoku_board(){
@@ -32,15 +33,12 @@ void Sudoku::display_sudoku_board(){
     }
 }
 
-bool Sudoku::space_checker(string Sudoku_board[9][9]){
-    for(int i=0; i<9; i++){
-        for(int j=0; j<9; j++){
+bool Sudoku::space_checker(string Sudoku_board[9][9], int i, int j){
+    
             if(Sudoku_board[i][j]=="⬜️"){
                 return true;
             }
             else return false;
-        }
-    }
 }
 
 int Sudoku::random_num_generator(int n){
@@ -84,15 +82,52 @@ void Sudoku::place_on_board(string Sudoku_board[9][9]){
     }
 }
 
+void Sudoku::place_player_num(int cell_num, string Sudoku_board[9][9], int num){
+    int i , j;
+    string board_num;
+    i=cell_num/9;
+    j=cell_num%9;
+    board_num = choose_number(num);
+    Sudoku_board[i][j]=board_num;
+}
+
 int main(){
     Sudoku S1;
+    Sudoku S4;
+    int choice;
     system("clear");
-    S1.create_sudoku_board();
+    cout<<endl<<"1. To solve a generated SUDOKU puzzle";
+    cout<<endl<<"2. Enter a puzzle to get solution";
+    cout<<"\nPlease select your choice: ";
+    cin>>choice;
+    switch(choice){
+        case 1: 
+                break;
+
+        case 2: int cell_num, digits, num;
+                S4.create_sudoku_board();
+                cout<<endl<<"How many digits do you want to enter on board: ";
+                cin>>digits;
+                for(int i=0; i<digits; i++){
+                    cout<<endl<<"Enter cell number from 0-80 in which you want to place number: ";
+                    cin>>cell_num;
+                    cout<<endl<<"What number do you want to enter: ";
+                    cin>>num;
+                    S4.place_player_num(cell_num, S4.Sudoku_board, num);
+                }
+                //system("clear");
+                cout<<endl;
+                S4.display_sudoku_board();
+                break;
+
+        default: cout<<"You have selected wrong option :(";
+    }
+    /*S1.create_sudoku_board();
     S1.display_sudoku_board();
     cout<<endl;
     cout<<endl;
     S1.place_on_board(S1.Sudoku_board);
-    S1.display_sudoku_board();
+    S1.display_sudoku_board();*/
     return 0;
 }
 
