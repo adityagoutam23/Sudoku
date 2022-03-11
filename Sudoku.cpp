@@ -1,10 +1,7 @@
 #include<iostream>
-<<<<<<< Updated upstrea
-=======
 #include<stdlib.h>
 #include<time.h>
 #include<string>
->>>>>>> Stashed changes
 
 using namespace std;
 
@@ -22,9 +19,7 @@ class Sudoku{
     public:
     string Sudoku_board[9][9];
     void create_sudoku_board();
-<<<<<<< Updated upstream
     void display_sudoku_board();
-=======
     void display_sudoku_board(string Sudoku_board[9][9]);
     bool space_checker(string Sudoku_board[9][9], int i, int j);
     int random_num_generator(int n);
@@ -34,7 +29,6 @@ class Sudoku{
     void Sudoku_Solver(string Sudoku_board[9][9]);
     bool backtraking(string Sudoku_board[9][9], int row, int col);
     bool Sudoku_condition(string Sudoku_board[9][9], int row, int col, int num);
->>>>>>> Stashed changes
 };
 
 void Sudoku::create_sudoku_board(){
@@ -54,7 +48,6 @@ void Sudoku::display_sudoku_board(string Sudoku_board[9][9]){
     }
 }
 
-<<<<<<< Updated upstream
 int main(){
     Sudoku S1;
     Sudoku S2;
