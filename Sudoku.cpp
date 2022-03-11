@@ -1,5 +1,5 @@
 #include<iostream>
-<<<<<<< Updated upstream
+<<<<<<< Updated upstrea
 =======
 #include<stdlib.h>
 #include<time.h>
