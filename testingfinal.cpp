@@ -28,6 +28,7 @@ void display_sudoku_board(){
 bool Sudoku_condition(int row, int col, int num){
     int r1 = sizeof(Sudoku_board[0])/sizeof(Sudoku_board[0][0]);
     int c1 = sizeof(Sudoku_board[0])/sizeof(char);
+    int size = r1*c1;
     for(int i=0; i<r1-1; i++){
         if(Sudoku_board[row][i]==(char)(num+'0')){
             return false;
@@ -54,49 +55,29 @@ bool backtraking(int row, int col){
     int r1 = sizeof(Sudoku_board[0])/sizeof(Sudoku_board[0][0]);
     int c1 = sizeof(Sudoku_board[0])/sizeof(char);
     int size = r1*c1;
-    if(row==r1){
+    if(row==r1-1 and col ==c1){
         return true;
     }
-    int nrow =0;
-    int ncol =0;
-    if(col==c1-1){
-        nrow=row+1;
-        ncol=0;
-    }
-    else{
-        nrow=row;
-        ncol=col+1;
+    if(col==c1){
+        row++;
+        col=0;
     }
     if(Sudoku_board[row][col]!='.'){
-        if(backtraking(nrow,ncol)){
-            return true;
-        }
+        return(backtraking(row,col+1));
     }
-        else{
-            for(int i=1;i<=9;i++){
-                if(Sudoku_condition(row, col, i)){
-                    Sudoku_board[row][col] = (char)(i+'0');
-                    if(backtraking(nrow, ncol)){
-                        return true;
-                    }
-                    else 
-                        Sudoku_board[row][col] = '.';
-                }
-            }
+    for(int i=1;i<=9;i++){
+        if(Sudoku_condition(row, col, i)){
+            Sudoku_board[row][col] = (char)(i+'0');
+            if(backtraking(row, col+1))
+                return true;
         }
-        //for(int i=0; i<9; i++){
-        //    for(int j=0; j<9; j++){
-        //        Sudoku_board[i][j]=sudoku_saver[i][j];
-         //   }
-        //}
+        Sudoku_board[row][col] = '.';
+    }
     return false;
 }
 
 void Sudoku_Solver(){
-    //display_sudoku_board(sudoku_saver);
-    //Sudo=sudoku_saver;
     backtraking(0, 0);
-    //display_sudoku_board(sudoku_saver);
 }
 
 
