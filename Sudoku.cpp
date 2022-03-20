@@ -5,41 +5,45 @@
 
 using namespace std;
 
-string sudokuboard[9][9] = {{"5","3",".",".","7",".",".",".","."},
-                            {"6",".",".","1","9","5",".",".","."},
-                            {".","9","8",".",".",".",".","6","."},
-                            {"8",".",".",".","6",".",".",".","3"},
-                            {"4",".",".","8",".","3",".",".","1"},
-                            {"7",".",".",".","2",".",".",".","6"},
-                            {".","6",".",".",".",".","2","8","."},
-                            {".",".",".","4","1","9",".",".","5"},
-                            {".",".",".",".","8",".",".","7","9"}};
+
+
 
 class Sudoku{
     public:
-    string Sudoku_board[9][9];
+    //string Sudoku_board[9][9];
     void create_sudoku_board();
     void display_sudoku_board();
-    void display_sudoku_board(string Sudoku_board[9][9]);
+    void display_sudoku_board(char Sudoku_board[9][9]);
     bool space_checker(string Sudoku_board[9][9], int i, int j);
     int random_num_generator(int n);
     string choose_number(int num);
     void place_on_board(string Sudoku_board[9][9]);
     void place_player_num(int cell_num, string Sudoku_board[9][9], int num);
-    void Sudoku_Solver(string Sudoku_board[9][9]);
-    bool backtraking(string Sudoku_board[9][9], int row, int col);
-    bool Sudoku_condition(string Sudoku_board[9][9], int row, int col, int num);
+    void Sudoku_Solver(/*char Sudoku_board[9][9]*/);
+    bool backtraking(/*char Sudoku_board[9][9],*/ int row, int col);
+    bool Sudoku_condition(/*char Sudoku_board[9][9],*/ int row, int col, int num);
+    char sudoku_saver[9][9];
+
+    char Sudoku_board[9][9] = {{'5','3','.','.','7','.','.','.','.'},
+                            {'6','.','.','1','9','5','.','.','.'},
+                            {'.','9','8','.','.','.','.','6','.'},
+                            {'8','.','.','.','6','.','.','.','3'},
+                            {'4','.','.','8','.','3','.','.','1'},
+                            {'7','.','.','.','2','.','.','.','6'},
+                            {'.','6','.','.','.','.','2','8','.'},
+                            {'.','.','.','4','1','9','.','.','5'},
+                            {'.','.','.','.','8','.','.','7','9'}};
 };
 
 void Sudoku::create_sudoku_board(){
     for(int i=0; i<9; i++){
         for(int j=0; j<9; j++){
-            Sudoku_board[i][j] = "⬜️";
+            Sudoku_board[i][j] = '.';
         }
     }
 }
 
-void Sudoku::display_sudoku_board(string Sudoku_board[9][9]){
+void Sudoku::display_sudoku_board(char Sudoku_board[9][9]){
     for(int i=0; i<9; i++){
         for(int j=0; j<9; j++){
             cout<<Sudoku_board[i][j];
@@ -106,15 +110,17 @@ void Sudoku::place_player_num(int cell_num, string Sudoku_board[9][9], int num){
     Sudoku_board[i][j]=board_num;
 }
 
-bool Sudoku::Sudoku_condition(string Sudoku_board[9][9], int row, int col, int num){
-    int size = sizeof(Sudoku_board)/sizeof(Sudoku_board[0][0]);
+bool Sudoku::Sudoku_condition(/*char Sudoku_board[9][9],*/ int row, int col, int num){
+    int r1 = sizeof(Sudoku_board[0])/sizeof(Sudoku_board[0][0]);
+    int c1 = sizeof(Sudoku_board[0])/sizeof(char);
+    int size = r1*c1;
     for(int i=0; i<size; i++){
-        if(Sudoku_board[i][col]==to_string(num)){
+        if(Sudoku_board[i][col]==(char)(num+'0')){
             return false;
         }
     }
     for(int j=0; j<size; j++){
-        if(Sudoku_board[row][j]==to_string(num)){
+        if(Sudoku_board[row][j]==char(num+'0')){
             return false;
         }
     }
@@ -122,7 +128,7 @@ bool Sudoku::Sudoku_condition(string Sudoku_board[9][9], int row, int col, int n
     int sc=3*(col/3);
     for(int i=sr; i<sr+3; i++){
         for(int j=sc; j<sc+3; j++){
-            if(Sudoku_board[i][j]==to_string(num)){
+            if(Sudoku_board[i][j]==(char)(num+'0')){
                 return false;
             }
         }
@@ -130,8 +136,10 @@ bool Sudoku::Sudoku_condition(string Sudoku_board[9][9], int row, int col, int n
     return true;
 }
 
-bool Sudoku:: backtraking(string Sudoku_board[9][9], int row, int col){
-    int size = sizeof(Sudoku_board)/sizeof(Sudoku_board[0][0]);
+bool Sudoku:: backtraking(/*char Sudoku_board[9][9],*/ int row, int col){
+    int r1 = sizeof(Sudoku_board[0])/sizeof(Sudoku_board[0][0]);
+    int c1 = sizeof(Sudoku_board[0])/sizeof(char);
+    int size = r1*c1;
     if(row==size){
         return true;
     }
@@ -145,40 +153,48 @@ bool Sudoku:: backtraking(string Sudoku_board[9][9], int row, int col){
         nrow=row;
         ncol=col+1;
     }
-    if(Sudoku_board[row][col]!="."){
-        if(backtraking(Sudoku_board,nrow,ncol)){
+    if(Sudoku_board[row][col]!='.'){
+        if(backtraking(/*Sudoku_board,*/nrow,ncol)){
             return true;
         }
+    }
         else{
             for(int i=1;i<=9;i++){
-                if(Sudoku_condition(Sudoku_board, row, col, i)){
-                    Sudoku_board[row][col] = to_string(i);
-                    if(backtraking(Sudoku_board, nrow, ncol)){
+                if(Sudoku_condition(/*Sudoku_board,*/ row, col, i)){
+                    Sudoku_board[row][col] = (char)(i+'0');
+                    if(backtraking(/*Sudoku_board,*/ nrow, ncol))
                         return true;
-                    }
                     else 
-                        Sudoku_board[row][col] = ".";
+                        Sudoku_board[row][col] = '.';
                 }
             }
         }
-    }
+        //for(int i=0; i<9; i++){
+        //    for(int j=0; j<9; j++){
+        //        Sudoku_board[i][j]=sudoku_saver[i][j];
+         //   }
+        //}
     return false;
 }
 
-void Sudoku::Sudoku_Solver(string Sudoku_board[9][9]){
-    backtraking(Sudoku_board, 0, 0);
+void Sudoku::Sudoku_Solver(/*char Sudo[9][9]*/){
+    //display_sudoku_board(sudoku_saver);
+    //Sudo=sudoku_saver;
+    backtraking(/*Sudo,*/ 0, 0);
+    //display_sudoku_board(sudoku_saver);
 }
 
 
 int main(){
-    Sudoku S1;
+    //Sudoku S1;
     Sudoku S4;
     int choice;
     system("clear");
     cout<<endl<<"1. To solve a generated SUDOKU puzzle";
     cout<<endl<<"2. Enter a puzzle to get solution";
     cout<<"\nPlease select your choice: ";
-    cin>>choice;
+    //cin>>choice;
+    choice=2;
     switch(choice){
         case 1: 
                 break;
@@ -199,9 +215,15 @@ int main(){
                 S4.display_sudoku_board(S4.Sudoku_board);
                 S4.Sudoku_Solver(S4.Sudoku_board);
                 S4.display_sudoku_board(S4.Sudoku_board);*/
-                S4.display_sudoku_board(sudokuboard);
-                S4.Sudoku_Solver(sudokuboard);
-                S4.display_sudoku_board(sudokuboard);
+                cout<<endl;
+                S4.display_sudoku_board(S4.Sudoku_board);
+                //cout<<endl<<sizeof(sudokuboard);
+                S4.Sudoku_Solver();
+                S4.display_sudoku_board(S4.Sudoku_board);
+                //sudokuboard=sudoku_saver
+                //S4.display_sudoku_board(sudoku_saver);
+                //S4.display_sudoku_board(sudoku_saver);
+                //S4.display_sudoku_board(sudokuboard);
                 break;
 
         default: cout<<"You have selected wrong option :(";
