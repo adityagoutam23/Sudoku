@@ -1,19 +1,24 @@
 #include<iostream>
 #include<stdlib.h>
 #include<time.h>
+#include<string>
 
 using namespace std;
 
+
 class Sudoku{
     public:
-    string Sudoku_board[9][9];
     void create_sudoku_board();
-    void display_sudoku_board();
+    void display_sudoku_board(string Sudoku_board[9][9]);
     bool space_checker(string Sudoku_board[9][9], int i, int j);
     int random_num_generator(int n);
     string choose_number(int num);
     void place_on_board(string Sudoku_board[9][9]);
     void place_player_num(int cell_num, string Sudoku_board[9][9], int num);
+    void Sudoku_Solver();
+    bool backtraking(int row, int col);
+    bool Sudoku_condition(int row, int col, int num);
+    string Sudoku_board[9][9];
 };
 
 void Sudoku::create_sudoku_board(){
@@ -24,7 +29,7 @@ void Sudoku::create_sudoku_board(){
     }
 }
 
-void Sudoku::display_sudoku_board(){
+void Sudoku::display_sudoku_board(string Sudoku_board[9][9]){
     for(int i=0; i<9; i++){
         for(int j=0; j<9; j++){
             cout<<Sudoku_board[i][j];
@@ -91,9 +96,73 @@ void Sudoku::place_player_num(int cell_num, string Sudoku_board[9][9], int num){
     Sudoku_board[i][j]=board_num;
 }
 
+bool Sudoku::Sudoku_condition(int row, int col, int num){
+    int r1 = sizeof(Sudoku_board[0])/sizeof(Sudoku_board[0][0]);
+    int c1 = sizeof(Sudoku_board[0])/sizeof(string);
+    for(int i=0; i<r1-1; i++){
+        if(Sudoku_board[row][i]==choose_number(num)){
+            return false;
+        }
+    }
+    for(int j=0; j<c1-1; j++){
+        if(Sudoku_board[j][col]==choose_number(num)){
+            return false;
+        }
+    }
+    int sr=3*(row/3);
+    int sc=3*(col/3);
+    for(int i=sr; i<sr+3; i++){
+        for(int j=sc; j<sc+3; j++){
+            if(Sudoku_board[i][j]==choose_number(num)){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool Sudoku:: backtraking(int row, int col){
+    int r1 = sizeof(Sudoku_board[0])/sizeof(Sudoku_board[0][0]);
+    int c1 = sizeof(Sudoku_board[0])/sizeof(string);
+    if(row==r1){
+        return true;
+    }
+    int nrow =0;
+    int ncol =0;
+    if(col==c1-1){
+        nrow=row+1;
+        ncol=0;
+    }
+    else{
+        nrow=row;
+        ncol=col+1;
+    }
+    if(Sudoku_board[row][col]!="⬜️"){
+        if(backtraking(nrow,ncol)){
+            return true;
+        }
+    }
+        else{
+            for(int i=1;i<=9;i++){
+                if(Sudoku_condition(row, col, i)){
+                    Sudoku_board[row][col] = choose_number(i);
+                    if(backtraking(nrow, ncol))
+                        return true;
+                    else 
+                        Sudoku_board[row][col] = "⬜️";
+                }
+            }
+        }
+    return false;
+}
+
+void Sudoku::Sudoku_Solver(){
+    backtraking(0, 0);
+}
+
+
 int main(){
-    Sudoku S1;
-    Sudoku S4;
+    Sudoku S4, S3;
     int choice;
     system("clear");
     cout<<endl<<"1. To solve a generated SUDOKU puzzle";
@@ -115,36 +184,13 @@ int main(){
                     cin>>num;
                     S4.place_player_num(cell_num, S4.Sudoku_board, num);
                 }
-                //system("clear");
                 cout<<endl;
-                S4.display_sudoku_board();
+                S4.display_sudoku_board(S4.Sudoku_board);
+                S4.Sudoku_Solver();
+                cout<<endl;
+                S4.display_sudoku_board(S4.Sudoku_board);
                 break;
 
         default: cout<<"You have selected wrong option :(";
     }
-    /*S1.create_sudoku_board();
-    S1.display_sudoku_board();
-    cout<<endl;
-    cout<<endl;
-    S1.place_on_board(S1.Sudoku_board);
-    S1.display_sudoku_board();*/
-    return 0;
 }
-
-
-/*
-S2.create_sudoku_board();
-    S2.display_sudoku_board();
-    cout<<endl;
-    cout<<endl;
-    S1.Sudoku_board[0][4]="1️⃣ ";
-    S1.Sudoku_board[0][3]="9️⃣ ";
-    S1.display_sudoku_board();
-    cout<<endl;
-    cout<<endl;
-    cout<<endl;
-    S2.Sudoku_board[5][7]="7️⃣ ";
-    S2.display_sudoku_board();
-    cout<<endl;
-
-*/
