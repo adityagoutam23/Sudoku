@@ -5,15 +5,15 @@
 
 using namespace std;
 
-char Sudoku_board[9][9] = {{'5','3','.','.','7','.','.','.','.'},
-                            {'6','.','.','1','9','5','.','.','.'},
-                            {'.','9','8','.','.','.','.','6','.'},
-                            {'8','.','.','.','6','.','.','.','3'},
-                            {'4','.','.','8','.','3','.','.','1'},
-                            {'7','.','.','.','2','.','.','.','6'},
-                            {'.','6','.','.','.','.','2','8','.'},
-                            {'.','.','.','4','1','9','.','.','5'},
-                            {'.','.','.','.','8','.','.','7','9'}};
+string Sudoku_board[9][9] = {{"5","3",".",".","7",".",".",".","."},
+                            {"6",".",".","1","9","5",".",".","."},
+                            {".","9","8",".",".",".",".","6","."},
+                            {"8",".",".",".","6",".",".",".","3"},
+                            {"4",".",".","8",".","3",".",".","1"},
+                            {"7",".",".",".","2",".",".",".","6"},
+                            {".","6",".",".",".",".","2","8","."},
+                            {".",".",".","4","1","9",".",".","5"},
+                            {".",".",".",".","8",".",".","7","9"}};
 
 
 class Sudoku{
@@ -21,7 +21,7 @@ class Sudoku{
     //string Sudoku_board[9][9];
     void create_sudoku_board();
     void display_sudoku_board();
-    void display_sudoku_board(char Sudoku_board[9][9]);
+    void display_sudoku_board(string Sudoku_board[9][9]);
     bool space_checker(string Sudoku_board[9][9], int i, int j);
     int random_num_generator(int n);
     string choose_number(int num);
@@ -41,7 +41,7 @@ void Sudoku::create_sudoku_board(){
     }
 }
 
-void Sudoku::display_sudoku_board(char Sudoku_board[9][9]){
+void Sudoku::display_sudoku_board(string Sudoku_board[9][9]){
     for(int i=0; i<9; i++){
         for(int j=0; j<9; j++){
             cout<<Sudoku_board[i][j];
@@ -110,14 +110,14 @@ void Sudoku::place_player_num(int cell_num, string Sudoku_board[9][9], int num){
 
 bool Sudoku::Sudoku_condition(/*char Sudoku_board[9][9],*/ int row, int col, int num){
     int r1 = sizeof(Sudoku_board[0])/sizeof(Sudoku_board[0][0]);
-    int c1 = sizeof(Sudoku_board[0])/sizeof(char);
+    int c1 = sizeof(Sudoku_board[0])/sizeof(string);
     for(int i=0; i<r1-1; i++){
-        if(Sudoku_board[row][i]==(char)(num+'0')){
+        if(Sudoku_board[row][i]==to_string(num)){
             return false;
         }
     }
     for(int j=0; j<c1-1; j++){
-        if(Sudoku_board[j][col]==char(num+'0')){
+        if(Sudoku_board[j][col]==to_string(num)){
             return false;
         }
     }
@@ -125,7 +125,7 @@ bool Sudoku::Sudoku_condition(/*char Sudoku_board[9][9],*/ int row, int col, int
     int sc=3*(col/3);
     for(int i=sr; i<sr+3; i++){
         for(int j=sc; j<sc+3; j++){
-            if(Sudoku_board[i][j]==(char)(num+'0')){
+            if(Sudoku_board[i][j]==to_string(num)){
                 return false;
             }
         }
@@ -135,7 +135,7 @@ bool Sudoku::Sudoku_condition(/*char Sudoku_board[9][9],*/ int row, int col, int
 
 bool Sudoku:: backtraking(/*char Sudoku_board[9][9],*/ int row, int col){
     int r1 = sizeof(Sudoku_board[0])/sizeof(Sudoku_board[0][0]);
-    int c1 = sizeof(Sudoku_board[0])/sizeof(char);
+    int c1 = sizeof(Sudoku_board[0])/sizeof(string);
     if(row==r1){
         return true;
     }
@@ -149,7 +149,7 @@ bool Sudoku:: backtraking(/*char Sudoku_board[9][9],*/ int row, int col){
         nrow=row;
         ncol=col+1;
     }
-    if(Sudoku_board[row][col]!='.'){
+    if(Sudoku_board[row][col]!="."){
         if(backtraking(/*Sudoku_board,*/nrow,ncol)){
             return true;
         }
@@ -157,11 +157,11 @@ bool Sudoku:: backtraking(/*char Sudoku_board[9][9],*/ int row, int col){
         else{
             for(int i=1;i<=9;i++){
                 if(Sudoku_condition(/*Sudoku_board,*/ row, col, i)){
-                    Sudoku_board[row][col] = (char)(i+'0');
+                    Sudoku_board[row][col] = to_string(i);
                     if(backtraking(/*Sudoku_board,*/ nrow, ncol))
                         return true;
                     else 
-                        Sudoku_board[row][col] = '.';
+                        Sudoku_board[row][col] = ".";
                 }
             }
         }
