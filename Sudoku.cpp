@@ -18,6 +18,8 @@ class Sudoku{
     void Sudoku_Solver();
     bool backtraking(int row, int col);
     bool Sudoku_condition(int row, int col, int num);
+    void Sudoku_generator(string Sudoku_board[9][9]);
+    int random_place_generator(int n);
     string Sudoku_board[9][9];
 };
 
@@ -52,6 +54,12 @@ int Sudoku::random_num_generator(int n){
     return temp;
 }
 
+int Sudoku::random_place_generator(int n){
+    int temp;
+    temp = rand() % n + 0;
+    return temp;
+}
+
 string Sudoku::choose_number(int num){
     switch(num){
         case 1: return "1️⃣ ";
@@ -75,17 +83,6 @@ string Sudoku::choose_number(int num){
     }
 }
 
-void Sudoku::place_on_board(string Sudoku_board[9][9]){
-    srand (time(NULL));
-    string temp;
-    for(int i=0; i<9; i++){
-        for(int j=0; j<9; j++){
-            int num = random_num_generator(9);
-            temp = choose_number(num);
-            Sudoku_board[i][j] = temp;
-        }
-    }
-}
 
 void Sudoku::place_player_num(int cell_num, string Sudoku_board[9][9], int num){
     int i , j;
@@ -160,17 +157,29 @@ void Sudoku::Sudoku_Solver(){
     backtraking(0, 0);
 }
 
+void Sudoku::Sudoku_generator(string Sudoku_board[9][9]){
+    srand (time(NULL));
+    int random_place = random_place_generator(80);
+    int random_num = random_num_generator(9);
+    place_player_num(random_place, Sudoku_board, random_num);
+}
+
 
 int main(){
-    Sudoku S4, S3;
+    Sudoku S1,S4;
     int choice;
     system("clear");
-    cout<<endl<<"1. To solve a generated SUDOKU puzzle";
+    cout<<endl<<"1. To solve a generated SUDOKU";
     cout<<endl<<"2. Enter a puzzle to get solution";
     cout<<"\nPlease select your choice: ";
     cin>>choice;
     switch(choice){
-        case 1: 
+        case 1: S1.create_sudoku_board();
+                S1.Sudoku_generator(S1.Sudoku_board);
+                S1.display_sudoku_board(S1.Sudoku_board);
+                cout<<endl;
+                S1.Sudoku_Solver();
+                S1.display_sudoku_board(S1.Sudoku_board);
                 break;
 
         case 2: int cell_num, digits, num;
