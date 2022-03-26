@@ -20,13 +20,18 @@ class Sudoku{
     bool Sudoku_condition(int row, int col, int num);
     void Sudoku_generator(string Sudoku_board[9][9]);
     int random_place_generator(int n);
+    void seperator(string Sudoku_board[9][9]);
     string Sudoku_board[9][9];
+    string Sudoku_board_hints[9][9];
+    string Sudoku_board_player[9][9];
 };
 
 void Sudoku::create_sudoku_board(){
     for(int i=0; i<9; i++){
         for(int j=0; j<9; j++){
             Sudoku_board[i][j] = "⬜️";
+            Sudoku_board_hints[i][j] = "⬜️";
+            Sudoku_board_player[i][j] = "⬜️";
         }
     }
 }
@@ -164,6 +169,25 @@ void Sudoku::Sudoku_generator(string Sudoku_board[9][9]){
     place_player_num(random_place, Sudoku_board, random_num);
 }
 
+void Sudoku::seperator(string Sudoku_board[9][9]){
+    srand (time(NULL));
+    for(int m=0; m<9; m++){
+        for(int n =0; n<9; n++){
+            Sudoku_board_player[m][n] = Sudoku_board[m][n];
+        }
+    }
+    int temp;
+    temp = rand() % 60 + 40;
+    int i=0,j=0;
+    for(int k=0; k<temp; k++){
+        int random_place = random_place_generator(80);
+        i=random_place/9;
+        j=random_place%9;
+        Sudoku_board_hints[i][j] = Sudoku_board_player[i][j];
+        Sudoku_board_player[i][j] = "⬜️";
+    }
+}
+
 
 int main(){
     Sudoku S1,S4;
@@ -180,6 +204,14 @@ int main(){
                 cout<<endl;
                 S1.Sudoku_Solver();
                 S1.display_sudoku_board(S1.Sudoku_board);
+                cout<<endl;
+                S1.seperator(S1.Sudoku_board);
+                S1.display_sudoku_board(S1.Sudoku_board);
+                cout<<endl;
+                S1.display_sudoku_board(S1.Sudoku_board_hints);
+                cout<<endl;
+                S1.display_sudoku_board(S1.Sudoku_board_player);
+                cout<<endl;
                 break;
 
         case 2: int cell_num, digits, num;
