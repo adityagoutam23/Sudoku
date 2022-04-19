@@ -171,21 +171,31 @@ void Sudoku::Sudoku_generator(string Sudoku_board[9][9]){
 
 void Sudoku::seperator(string Sudoku_board[9][9]){
     srand (time(NULL));
+    int temp=0;
+    int count=0;
+    temp = rand() % 40 + 20;
+    cout<<endl<<temp<<endl;
     for(int m=0; m<9; m++){
         for(int n =0; n<9; n++){
             Sudoku_board_player[m][n] = Sudoku_board[m][n];
         }
     }
-    int temp;
-    temp = rand() % 60 + 40;
-    int i=0,j=0;
     for(int k=0; k<temp; k++){
+        int i=0,j=0;
         int random_place = random_place_generator(80);
         i=random_place/9;
         j=random_place%9;
-        Sudoku_board_hints[i][j] = Sudoku_board_player[i][j];
-        Sudoku_board_player[i][j] = "⬜️";
+        if(Sudoku_board_hints[i][j]=="⬜️"){
+            Sudoku_board_hints[i][j] = Sudoku_board_player[i][j];
+            Sudoku_board_player[i][j] = "⬜️";  
+            count++; 
+        }
+        else{
+            k=k-1;
+            continue;
+        }
     }
+    cout<<endl<<count<<endl;
 }
 
 
@@ -208,9 +218,9 @@ int main(){
                 S1.seperator(S1.Sudoku_board);
                 S1.display_sudoku_board(S1.Sudoku_board);
                 cout<<endl;
-                S1.display_sudoku_board(S1.Sudoku_board_hints);
-                cout<<endl;
                 S1.display_sudoku_board(S1.Sudoku_board_player);
+                cout<<endl;
+                S1.display_sudoku_board(S1.Sudoku_board_hints);
                 cout<<endl;
                 break;
 
