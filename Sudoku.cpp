@@ -172,9 +172,7 @@ void Sudoku::Sudoku_generator(string Sudoku_board[9][9]){
 void Sudoku::seperator(string Sudoku_board[9][9]){
     srand (time(NULL));
     int temp=0;
-    int count=0;
-    temp = rand() % 40 + 20;
-    cout<<endl<<temp<<endl;
+    temp = rand() % 20 + 40;
     for(int m=0; m<9; m++){
         for(int n =0; n<9; n++){
             Sudoku_board_player[m][n] = Sudoku_board[m][n];
@@ -187,15 +185,13 @@ void Sudoku::seperator(string Sudoku_board[9][9]){
         j=random_place%9;
         if(Sudoku_board_hints[i][j]=="⬜️"){
             Sudoku_board_hints[i][j] = Sudoku_board_player[i][j];
-            Sudoku_board_player[i][j] = "⬜️";  
-            count++; 
+            Sudoku_board_player[i][j] = "⬜️";
         }
         else{
             k=k-1;
             continue;
         }
     }
-    cout<<endl<<count<<endl;
 }
 
 
